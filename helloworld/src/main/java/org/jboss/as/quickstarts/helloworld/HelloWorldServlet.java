@@ -40,7 +40,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  */
 @SuppressWarnings("serial")
-@WebServlet("/HelloWorld")
+@WebServlet(value = "/HelloWorld")
 public class HelloWorldServlet extends HttpServlet {
 
     static String PAGE_HEADER = "<html><head><title>helloworld</title></head><body>";
