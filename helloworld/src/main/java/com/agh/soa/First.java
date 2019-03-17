@@ -1,4 +1,4 @@
-package org.jboss.as.quickstarts.helloworld;
+package com.agh.soa;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
