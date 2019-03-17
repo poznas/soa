@@ -1,4 +1,4 @@
-package org.jboss.as.quickstarts.helloworld;
+package com.agh.soa.lab2;
 
 import one.util.streamex.StreamEx;
 
@@ -18,8 +18,8 @@ import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 
-@WebServlet("Lab2Ex1")
-public class Lab2Ex1 extends HttpServlet {
+@WebServlet("lab2/numbers")
+public class NumbersServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
