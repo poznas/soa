@@ -42,7 +42,7 @@ public class BookFilter implements Predicate<Book> {
                     for (var predicate : predicates)
                         book = book.filter(predicate);
 
-                    return book.map(b -> include).orElse(!include);
+                    return book.isPresent() == include;
                 })
                 .orElse(true);
     }
