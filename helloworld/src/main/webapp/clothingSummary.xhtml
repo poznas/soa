@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<HTML lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html">
+<h:head>
+    <meta charset="UTF-8"/>
+    <title>Clothing Summary</title>
+</h:head>
+<h:body>
+
+    <h1>Clothing Summary</h1>
+
+    Name : <h:outputText value="#{cloth.client.basic.name}"/><br/>
+    Email: <h:outputText value="#{cloth.client.basic.email}"/><br/>
+    Age : <h:outputText value="#{cloth.client.basic.age}"/><br/>
+    Gender : <h:outputText value="#{cloth.client.basic.gender}"/><br/>
+    Education : <h:outputText value="#{cloth.client.basic.education}"/><br/>
+    Heigth : <h:outputText value="#{cloth.client.basic.height}"/><br/>
+
+    <br/>
+    <h:panelGroup rendered="#{cloth.client.basic.gender.name eq 'M'}">
+        chestCircumference: <h:outputText value="#{cloth.client.male.chestCircumference}"/><br/>
+        waistCircumference: <h:outputText value="#{cloth.client.male.waistCircumference}"/><br/>
+    </h:panelGroup>
+
+    <h:panelGroup id="women" rendered="#{cloth.client.basic.gender.name eq 'F'}">
+        bustPerimeter:<h:outputText value="#{cloth.client.female.bustPerimeter}"/><br/>
+        waistCircumference:<h:outputText value="#{cloth.client.female.waistCircumference}"/><br/>
+        cupSize:<h:outputText value="#{cloth.client.female.cupSize}"/><br/>
+    </h:panelGroup>
+
+    <br/>
+    monthly spends? <h:outputText value="#{cloth.client.answers.first}"/><br/>
+    shopping freq? <h:outputText value="#{cloth.client.answers.second}"/><br/>
+    colors? <h:outputText value="#{cloth.client.answers.third}"/><br/>
+    Cloth preference? <h:outputText value="#{cloth.client.preferredClothTypes}"/><br/>
+</h:body>
+</HTML>
+
