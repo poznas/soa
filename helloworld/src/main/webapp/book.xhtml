@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<HTML lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <meta charset="UTF-8"/>
+    <title>Book Manager</title>
+</h:head>
+<h:body>
+    <h:form>
+        <h:dataTable value="#{bookManager.books}" var="b" styleClass="order-table"
+                     headerClass="order-table-header"
+                     rowClasses="order-table-odd-row,order-table-even-row">
+
+            <h:column>
+                <f:facet name="header">Title</f:facet>
+                #{b.title}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">Author</f:facet>
+                #{b.author}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">Type</f:facet>
+                #{b.type}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">Price</f:facet>
+                #{b.price}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">Currency</f:facet>
+                #{b.currency}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">Pages</f:facet>
+                #{b.pages}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">Selected</f:facet>
+                <h:selectBooleanCheckbox value="#{b.selected}"/>
+            </h:column>
+
+        </h:dataTable>
+
+        <br/>
+        <h:panelGrid columns="4">
+            <h:outputLabel value="INCLUDE"/>
+            <h:outputLabel value="FILTERS:"/>
+            <h:outputLabel value="EXCLUDE"/>
+            <h:outputLabel value="FILTERS:"/>
+            <h:outputLabel value="Title:"/>
+            <h:inputText value="#{bookManager.includeFilter.titleSearchPhrase}"/>
+            <h:outputLabel value="Title:"/>
+            <h:inputText value="#{bookManager.excludeFilter.titleSearchPhrase}"/>
+            <h:outputLabel value="Author:"/>
+            <h:inputText value="#{bookManager.includeFilter.authorSearchPhrase}"/>
+            <h:outputLabel value="Author:"/>
+            <h:inputText value="#{bookManager.excludeFilter.authorSearchPhrase}"/>
+            <h:outputLabel value="Type:"/>
+            <h:selectOneMenu value="#{bookManager.includeFilter.type}">
+                <f:selectItems value="#{bookManager.bookTypes}"/>
+            </h:selectOneMenu>
+            <h:outputLabel value="Type:"/>
+            <h:selectOneMenu value="#{bookManager.excludeFilter.type}">
+                <f:selectItems value="#{bookManager.bookTypes}"/>
+            </h:selectOneMenu>
+            <h:outputLabel value="Price From:"/>
+            <h:inputText value="#{bookManager.includeFilter.priceFrom}"/>
+            <h:outputLabel value="Price From:"/>
+            <h:inputText value="#{bookManager.excludeFilter.priceFrom}"/>
+            <h:outputLabel value="Price To:"/>
+            <h:inputText value="#{bookManager.includeFilter.priceTo}"/>
+            <h:outputLabel value="Price To:"/>
+            <h:inputText value="#{bookManager.excludeFilter.priceTo}"/>
+            <h:outputLabel value="Currency:"/>
+            <h:selectOneMenu value="#{bookManager.includeFilter.currencyCode}">
+                <f:selectItems value="#{bookManager.currencies}"/>
+            </h:selectOneMenu>
+            <h:outputLabel value="Currency:"/>
+            <h:selectOneMenu value="#{bookManager.excludeFilter.currencyCode}">
+                <f:selectItems value="#{bookManager.currencies}"/>
+            </h:selectOneMenu>
+        </h:panelGrid>
+        <br/>
+        <h:commandButton value="Refresh" action="#{bookManager.refresh}"/>
+    </h:form>
+
+    <h1>Summary</h1>
+    <h:outputLabel value="Selected count: "/>
+    <h:outputLabel value="#{bookManager.selectedCount}"/><br/>
+    <h:outputLabel value="Total price: "/>
+    <h:outputLabel value="#{bookManager.totalPrice}"/>
+
+</h:body>
+</HTML>
+
