@@ -1,0 +1,137 @@
+<!DOCTYPE HTML>
+<HTML lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <meta charset="UTF-8"/>
+    <title>Clothing Store</title>
+</h:head>
+<h:body>
+
+    <h1>Cloth Form</h1>
+    <h:form id="firstForm">
+
+        Name
+        <h:inputText value="#{cloth.client.basic.name}" required="true" id="name"/>
+        <h:message for="name"/>
+        <br/>
+
+        Email
+        <h:inputText id="email" value="#{cloth.client.basic.email}" required="true">
+            <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]"/>
+        </h:inputText>
+        <h:message for="email"/>
+        <br/>
+
+        Age
+        <h:inputText value="#{cloth.client.basic.age}"/>
+        <br/>
+
+        Gender
+        <p:selectOneMenu value="#{cloth.client.basic.gender}">
+            <f:selectItems value="#{cloth.genders}"/>
+            <p:ajax update=":firstForm:genderSpecific"/>
+        </p:selectOneMenu>
+        <br/>
+
+        Education
+        <h:inputText value="#{cloth.client.basic.education}"/>
+        <br/>
+
+        Heigth
+        <h:inputText value="#{cloth.client.basic.height}"/>
+        <br/>
+
+        <h:panelGroup id="genderSpecific">
+
+            <h:panelGroup id="women" rendered="#{cloth.client.basic.gender.name eq 'F'}">
+
+                bustPerimeter
+                <h:inputText value="#{cloth.client.female.bustPerimeter}"/><br/>
+                waistCircumference
+                <h:inputText value="#{cloth.client.female.waistCircumference}"/><br/>
+                cupSize
+                <h:inputText value="#{cloth.client.female.cupSize}"/><br/>
+
+            </h:panelGroup>
+
+            <h:panelGroup id="men" rendered="#{cloth.client.basic.gender.name eq 'M'}">
+
+                chestCircumference
+                <h:inputText value="#{cloth.client.male.chestCircumference}"/><br/>
+                waistCircumference
+                <h:inputText value="#{cloth.client.male.waistCircumference}"/><br/>
+
+            </h:panelGroup>
+
+        </h:panelGroup>
+
+        <h:commandButton value="submit" action="#{cloth.acceptFirstForm}"/>
+    </h:form>
+
+
+    <h:form rendered="#{cloth.firstFormAccepted}">
+
+        <h3>Next Questions</h3>
+
+        monthly spends?
+        <h:selectOneMenu value="#{cloth.client.answers.first}">
+            <f:selectItem itemValue="do 100 zł"/>
+            <f:selectItem itemValue="100-500zł"/>
+            <f:selectItem itemValue="500-1000zł"/>
+            <f:selectItem itemValue="powyżej 1000zł"/>
+        </h:selectOneMenu>
+        <br/>
+
+        shopping freq?
+        <h:selectOneMenu value="#{cloth.client.answers.second}">
+            <f:selectItem itemValue="Codziennie"/>
+            <f:selectItem itemValue="Raz w tygodniu"/>
+            <f:selectItem itemValue="Raz w miesiącu"/>
+            <f:selectItem itemValue="Kilka razy w roku"/>
+        </h:selectOneMenu>
+        <br/>
+
+        colors?
+        <h:selectManyCheckbox value="#{cloth.client.answers.third}">
+            <f:selectItem itemValue="Kolorowo-jaskrawych"/>
+            <f:selectItem itemValue="Stonowanych szarościach"/>
+            <f:selectItem itemValue="W czerni i bieli"/>
+            <f:selectItem itemValue="W samej czerni"/>
+        </h:selectManyCheckbox>
+        <br/>
+
+        Cloth preference?
+        <h:selectManyCheckbox value="#{cloth.client.preferredClothTypes}"
+                              rendered="#{cloth.client.basic.gender.name eq 'F'}">
+            <f:selectItem itemValue="Garsonki"/>
+            <f:selectItem itemValue="Bluzki"/>
+            <f:selectItem itemValue="Spódniczki"/>
+            <f:selectItem itemValue="Spodnie"/>
+        </h:selectManyCheckbox>
+
+        <h:selectManyCheckbox value="#{cloth.client.preferredClothTypes}"
+                              rendered="#{cloth.client.basic.gender.name eq 'M'}">
+            <f:selectItem itemValue="Spodnie"/>
+            <f:selectItem itemValue="Spodenki"/>
+            <f:selectItem itemValue="Garnitury"/>
+            <f:selectItem itemValue="Koszule"/>
+            <f:selectItem itemValue="Krawaty"/>
+        </h:selectManyCheckbox>
+        <br/>
+
+        <h:commandButton value="submit" action="clothingSummary"/>
+    </h:form>
+
+    <h:form>
+        <h1>Reklama</h1>
+        <h:commandLink action="#{billboard.click}">
+            <h:graphicImage value="#{billboard.ad}" height="200"/>
+        </h:commandLink>
+        <h:outputLabel value="Total click count: "/>
+        <h:outputLabel value="#{billboard.counter}"/><br/>
+    </h:form>
+</h:body>
+</HTML>
+
