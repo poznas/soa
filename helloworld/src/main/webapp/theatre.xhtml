@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<HTML lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <meta charset="UTF-8"/>
+    <title>Theatre</title>
+</h:head>
+<h:body>
+    <h2>Available Seats</h2>
+    <h:form>
+        <h:dataTable value="#{theatre.seatInfoService.seatList}" var="b" styleClass="order-table"
+                     headerClass="order-table-header"
+                     rowClasses="order-table-odd-row,order-table-even-row">
+
+            <h:column>
+                <f:facet name="header">Seat ID</f:facet>
+                #{b.id}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">Seat class</f:facet>
+                #{b.seatClass}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">Price</f:facet>
+                #{b.price}
+            </h:column>
+
+        </h:dataTable>
+
+        <br/>
+
+        <br/>
+
+        <h3>Book Seat Nr:</h3>
+        <h:inputText value="#{theatre.seatId}" required="true" id="name"/>
+        <h:commandButton value="book" action="#{theatre.buySeat}"/><br/>
+
+    </h:form>
+
+
+    <h:outputLabel value="#{theatre.errorMessage}" style="color: crimson"/><br/>
+
+</h:body>
+</HTML>
+

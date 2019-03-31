@@ -14,7 +14,7 @@ import java.io.PrintWriter;
 @WebServlet("pierwszy")
 public class First extends HttpServlet {
 
-    @EJB(lookup = "java:global/ejb_war/TestBeanCounter")
+    @EJB(lookup = "java:global/ejb/TestBeanCounter")
     ITestBeanCounter counter;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
