@@ -80,7 +80,7 @@
         <!-- LAB 4 -->
         <dependency>
             <groupId>org.wildfly.quickstarts</groupId>
-            <artifactId>ejb3-server-api</artifactId>
+            <artifactId>ejb-api</artifactId>
             <version>17.0.0.Beta1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>

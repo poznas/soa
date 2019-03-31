@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>ejb3-server-api</artifactId>
+    <artifactId>ejb-api</artifactId>
     <version>17.0.0.Beta1-SNAPSHOT</version>
 
 
