@@ -21,6 +21,24 @@
                     <target>11</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>5.2.0</version>
+                <configuration>
+                    <driver>org.postgresql.Driver</driver>
+                    <url>jdbc:postgresql://db.bsm.pub:5432/soa</url>
+                    <user>soa_user</user>
+                    <password>soa_user</password>
+                    <schemas>
+                        <schema>public</schema>
+                    </schemas>
+                    <baselineOnMigrate>true</baselineOnMigrate>
+                    <locations>
+                        <location>versioned_0</location>
+                    </locations>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
     <packaging>war</packaging>
@@ -30,6 +48,30 @@
             <artifactId>ejb-api</artifactId>
             <version>17.0.0.Beta1-SNAPSHOT</version>
             <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.clojure</groupId>
+            <artifactId>java.jdbc</artifactId>
+            <version>0.7.9</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>5.4.2.Final</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.vladmihalcea</groupId>
+            <artifactId>hibernate-types-52</artifactId>
+            <version>2.4.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.2.5</version>
         </dependency>
     </dependencies>
 
