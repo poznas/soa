@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<HTML lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <meta charset="UTF-8"/>
+    <title>Books</title>
+</h:head>
+<h:body>
+    <h2>Book Repository</h2>
+    <h:form>
+        <h:dataTable value="#{books.bookRepository.entities}" var="b" styleClass="order-table"
+                     headerClass="order-table-header"
+                     rowClasses="order-table-odd-row,order-table-even-row">
+
+            <h:column>
+                <f:facet name="header">Book ID</f:facet>
+                #{b.id}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">Author first name</f:facet>
+                #{b.authorFirstName}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">Author second name</f:facet>
+                #{b.authorSecondName}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">Title</f:facet>
+                #{b.title}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">ISBN</f:facet>
+                #{b.isbn}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">Year</f:facet>
+                #{b.year}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">Price</f:facet>
+                #{b.price}
+            </h:column>
+
+        </h:dataTable>
+
+        <br/>
+        <br/>
+
+        <h3>Book Form</h3>
+        <h:panelGrid columns="2">
+            <h:outputLabel value="Book ID:"/>
+            <h:inputText value="#{books.formBook.id}"/>
+            <h:outputLabel value="Author first name:"/>
+            <h:inputText value="#{books.formBook.authorFirstName}"/>
+            <h:outputLabel value="Author second name:"/>
+            <h:inputText value="#{books.formBook.authorSecondName}"/>
+            <h:outputLabel value="Title:"/>
+            <h:inputText value="#{books.formBook.title}"/>
+            <h:outputLabel value="ISBN:"/>
+            <h:inputText value="#{books.formBook.isbn}"/>
+            <h:outputLabel value="Year:"/>
+            <h:inputText value="#{books.formBook.year}"/>
+            <h:outputLabel value="Price:"/>
+            <h:inputText value="#{books.formBook.price}"/>
+        </h:panelGrid>
+
+        <h:commandButton value="Insert" action="#{books.insert}"/>
+        <h:commandButton value="Update" action="#{books.merge}"/>
+        <h:commandButton value="Delete" action="#{books.delete}"/><br/>
+
+    </h:form>
+
+</h:body>
+</HTML>
+
