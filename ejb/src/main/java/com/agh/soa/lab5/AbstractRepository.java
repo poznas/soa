@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.Root;
 import javax.transaction.*;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -48,9 +49,14 @@ public abstract class AbstractRepository<T> {
     }
 
     public T getEntity(Long id) {
+        var builder = entityManager.getCriteriaBuilder();
+        var query = builder.createQuery(getType());
+        Root<T> root = query.from(getType());
+
+        query.select(root).where(builder.equal(root.get("id"), id));
+
         try {
-            String query = "select e from " + getType().getName() + " e where e.id=" + id;
-            return entityManager.createQuery(query, getType()).getSingleResult();
+            return entityManager.createQuery(query).getSingleResult();
         } catch (NoResultException e) {
             return null;
         }
