@@ -86,14 +86,17 @@ public class LibraryService implements ILibraryService {
     }
 
     @Override
-    public void mergeReader(Reader currentReader) {
-        readerRepository.merge(currentReader);
+    public void mergeReader(Reader reader) {
+        readerRepository.merge(reader);
     }
 
     @Override
-    public Reader insertReader(Reader currentReader) {
-        currentReader.setId(null);
-        return readerRepository.insert(currentReader);
+    public Reader insertReader(Reader reader) {
+        var newReader = new Reader();
+        newReader.setFirstName(reader.getFirstName());
+        newReader.setSecondName(reader.getSecondName());
+
+        return readerRepository.insert(newReader);
     }
 
     @Override

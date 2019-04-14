@@ -17,9 +17,9 @@ public interface ILibraryService {
 
     Reader getReader(Long id);
 
-    void mergeReader(@NotNull Reader currentReader);
+    void mergeReader(@NotNull Reader reader);
 
-    Reader insertReader(@NotNull Reader currentReader);
+    Reader insertReader(@NotNull Reader reader);
 
     List<LibraryBook> getAvailableBooks();
 }

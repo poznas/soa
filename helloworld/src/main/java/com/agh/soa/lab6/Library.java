@@ -34,10 +34,7 @@ public class Library {
     }
 
     public void insertReader() {
-        var reader = new Reader();
-        reader.setFirstName(currentReader.getFirstName());
-        reader.setSecondName(currentReader.getSecondName());
-        currentReader = libraryService.insertReader(reader);
+        currentReader = libraryService.insertReader(currentReader);
     }
 
     public void borrowBook() {
