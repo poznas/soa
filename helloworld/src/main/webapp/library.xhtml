@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<HTML lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <meta charset="UTF-8"/>
+    <title>Library</title>
+</h:head>
+<h:body>
+    <h2>Welcome to Library</h2>
+    <h:form>
+        <h3>Current Reader</h3>
+        <h:panelGrid columns="2">
+            <h:outputLabel value="ID:"/>
+            <h:inputText value="#{library.currentReader.id}"/>
+            <h:outputLabel value="First name:"/>
+            <h:inputText value="#{library.currentReader.firstName}"/>
+            <h:outputLabel value="Second name:"/>
+            <h:inputText value="#{library.currentReader.secondName}"/>
+        </h:panelGrid>
+
+        <h:commandButton value="Load" action="#{library.loadReader}"/>
+        <h:commandButton value="Update" action="#{library.mergeReader}"/>
+        <h:commandButton value="Insert" action="#{library.insertReader}"/>
+        <br/>
+        <br/>
+
+        <h4>Borrowed Books</h4>
+        <h:dataTable value="#{library.currentReader.borrowedBooks}" var="b" styleClass="order-table"
+                     headerClass="order-table-header"
+                     rowClasses="order-table-odd-row,order-table-even-row">
+            <h:column>
+                <f:facet name="header">Author</f:facet>
+                #{b.author.firstName} #{b.author.secondName}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Title</f:facet>
+                #{b.title}
+            </h:column>
+            <h:column>
+                <h:commandLink action="#{library.returnBook}" value="return book">
+                    <f:setPropertyActionListener value="#{b.id}" target="#{library.bookId}"/>
+                </h:commandLink>
+            </h:column>
+        </h:dataTable>
+
+        <h3>Available Books</h3>
+        <h:dataTable value="#{library.libraryService.availableBooks}" var="b" styleClass="order-table"
+                     headerClass="order-table-header"
+                     rowClasses="order-table-odd-row,order-table-even-row">
+
+            <h:column>
+                <f:facet name="header">Author</f:facet>
+                #{b.author.firstName} #{b.author.secondName}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Title</f:facet>
+                #{b.title}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">Total Copies</f:facet>
+                #{b.totalCopiesCount}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Available Copies</f:facet>
+                #{b.availableCopiesCount}
+            </h:column>
+            <h:column>
+                <h:commandLink action="#{library.borrowBook}" value="borrow book"
+                               rendered="#{library.currentReader.borrowedBooks.stream().noneMatch(x -> x.id == b.id
+                || library.currentReader.borrowedBooks == null)}">
+                    <f:setPropertyActionListener value="#{b.id}" target="#{library.bookId}"/>
+                </h:commandLink>
+            </h:column>
+        </h:dataTable>
+    </h:form>
+
+</h:body>
+</HTML>
+

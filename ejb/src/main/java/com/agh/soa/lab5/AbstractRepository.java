@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.transaction.*;
 import java.util.List;
@@ -20,10 +21,10 @@ public abstract class AbstractRepository<T> {
     @Resource
     private UserTransaction userTransaction;
 
-    private Class<T> type;
+    protected abstract Class<T> getType();
 
-    public void insert(T entity) {
-        commit(entity, EntityManager::persist);
+    public T insert(T entity) {
+        return commit(entity, EntityManager::persist);
     }
 
     public void merge(T entity) {
@@ -34,7 +35,7 @@ public abstract class AbstractRepository<T> {
         commit(entity, (em, x) -> em.remove(em.contains(x) ? x : em.merge(x)));
     }
 
-    private void commit(T entity, BiConsumer<EntityManager, T> action) {
+    private T commit(T entity, BiConsumer<EntityManager, T> action) {
         try {
             userTransaction.begin();
             action.accept(entityManager, entity);
@@ -43,9 +44,19 @@ public abstract class AbstractRepository<T> {
                 | HeuristicMixedException | HeuristicRollbackException | RollbackException e) {
             e.printStackTrace();
         }
+        return entity;
+    }
+
+    public T getEntity(Long id) {
+        try {
+            String query = "select e from " + getType().getName() + " e where e.id=" + id;
+            return entityManager.createQuery(query, getType()).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     public List<T> getEntities() {
-        return entityManager.createQuery("from " + type.getName(), type).getResultList();
+        return entityManager.createQuery("from " + getType().getName(), getType()).getResultList();
     }
 }
