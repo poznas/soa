@@ -5,6 +5,10 @@
     <persistence-unit name="Soa" transaction-type="JTA">
 
         <class>com.agh.soa.lab5.model.Book</class>
+        <class>com.agh.soa.lab6.model.LibraryBook</class>
+        <class>com.agh.soa.lab6.model.Borrow</class>
+        <class>com.agh.soa.lab6.model.Author</class>
+        <class>com.agh.soa.lab6.model.Reader</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>

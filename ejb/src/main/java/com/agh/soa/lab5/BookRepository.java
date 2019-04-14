@@ -1,6 +1,5 @@
 package com.agh.soa.lab5;
 
-import com.agh.soa.IBookRepository;
 import com.agh.soa.lab5.model.Book;
 
 import javax.ejb.Remote;
@@ -14,7 +13,8 @@ import static javax.ejb.TransactionManagementType.BEAN;
 @Remote(IBookRepository.class)
 public class BookRepository extends AbstractRepository<Book> implements IBookRepository {
 
-    public BookRepository() {
-        setType(Book.class);
+    @Override
+    protected Class<Book> getType() {
+        return Book.class;
     }
 }

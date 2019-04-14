@@ -1,7 +1,6 @@
 package com.agh.soa.lab5;
 
 
-import com.agh.soa.IBookRepository;
 import com.agh.soa.lab5.model.Book;
 import lombok.Getter;
 
