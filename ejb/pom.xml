@@ -73,6 +73,14 @@
             <artifactId>postgresql</artifactId>
             <version>42.2.5</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.jboss.spec.javax.jms</groupId>
+            <artifactId>jboss-jms-api_2.0_spec</artifactId>
+            <scope>compile</scope>
+            <version>1.0.0.Final</version>
+        </dependency>
+
     </dependencies>
 
 </project>

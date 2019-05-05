@@ -1,0 +1,76 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: AWS CloudFormation template to launch resources for the Amazon MQ.
+Parameters:
+  AmazonMQBrokerUser:
+    Type: String
+    Default: soaMqUser
+    MinLength: 2
+  AmazonMQBrokerPassword:
+    Type: String
+    MinLength: 12
+    Default: soaMqUserPassword
+    NoEcho: true
+Resources:
+
+  DNSAlias:
+    Type: AWS::Route53::RecordSetGroup
+    Properties:
+      HostedZoneName: bsm.pub.
+      RecordSets:
+        - Name: soa-mq.bsm.pub.
+          Type: A
+          TTL: '900'
+          ResourceRecords:
+            - !Select [1, !GetAtt AmazonMQBroker.IpAddresses]
+
+  AmazonMQSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Limits security group ingress and egress traffic for the Amazon MQ instance
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 8162
+        ToPort: 8162
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: 61617
+        ToPort: 61617
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: 5671
+        ToPort: 5671
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: 61614
+        ToPort: 61614
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: 8883
+        ToPort: 8883
+        CidrIp: 0.0.0.0/0
+
+  AmazonMQBroker:
+    Type: AWS::AmazonMQ::Broker
+    Properties:
+      SecurityGroups:
+      - !GetAtt AmazonMQSecurityGroup.GroupId
+      BrokerName:
+        Fn::Join:
+        - "-"
+        - - Ref: AWS::StackName
+          - Broker
+      EngineType: ActiveMQ
+      EngineVersion: 5.15.0
+      HostInstanceType: mq.t2.micro
+      DeploymentMode: ACTIVE_STANDBY_MULTI_AZ
+      PubliclyAccessible: true
+      AutoMinorVersionUpgrade: false
+      Users:
+      - ConsoleAccess: true
+        Groups:
+        - admin
+        Username:
+          Ref: AmazonMQBrokerUser
+        Password:
+          Ref: AmazonMQBrokerPassword
