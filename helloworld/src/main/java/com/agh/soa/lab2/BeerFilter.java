@@ -1,20 +1,22 @@
 package com.agh.soa.lab2;
 
 
-import lombok.extern.slf4j.Slf4j;
+import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 
-import javax.servlet.*;
+import java.io.IOException;
+import java.util.function.IntConsumer;
+import java.util.stream.Stream;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Optional;
-import java.util.function.Consumer;
-import java.util.function.IntConsumer;
+import lombok.extern.java.Log;
 
-import static java.util.Optional.of;
-import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
-
+@Log
 @WebFilter("/BeerFilter")
 public class BeerFilter implements Filter {
 
@@ -24,19 +26,20 @@ public class BeerFilter implements Filter {
 
         var response = (HttpServletResponse) servletResponse;
 
-        Consumer<Integer> sendError = age -> {
+        IntConsumer sendError = age -> {
             try {
                 response.sendError(SC_FORBIDDEN);
             } catch (IOException e) {
-                e.printStackTrace();
+                log.warning(e.getMessage());
             }
         };
 
-        of(servletRequest)
+        Stream.of(servletRequest)
                 .map(HttpServletRequest.class::cast)
                 .map(rq -> rq.getHeader("x-age"))
-                .map(Integer::parseInt)
+                .mapToInt(Integer::parseInt)
                 .filter(age -> age < 18)
+                .findAny()
                 .ifPresent(sendError);
 
         filterChain.doFilter(servletRequest, servletResponse);

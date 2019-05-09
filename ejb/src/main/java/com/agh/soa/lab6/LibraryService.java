@@ -1,5 +1,11 @@
 package com.agh.soa.lab6;
 
+import static com.agh.soa.lab6.exception.LibraryException.NO_BOOK_COPIES_TO_BORROW;
+import static com.agh.soa.lab6.exception.LibraryException.NO_SUCH_BOOK;
+import static com.agh.soa.lab6.exception.LibraryException.NO_SUCH_BOOK_TO_RETURN;
+import static java.util.Optional.of;
+import static java.util.stream.Collectors.toList;
+
 import com.agh.soa.lab6.dao.AuthorRepository;
 import com.agh.soa.lab6.dao.BorrowRepository;
 import com.agh.soa.lab6.dao.LibraryBookRepository;
@@ -8,19 +14,15 @@ import com.agh.soa.lab6.exception.LibraryException;
 import com.agh.soa.lab6.model.Borrow;
 import com.agh.soa.lab6.model.LibraryBook;
 import com.agh.soa.lab6.model.Reader;
-import lombok.Getter;
-
+import com.agh.soa.lab7.LibraryMessageProducer;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.function.Predicate;
 import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Stateful;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.function.Predicate;
-
-import static com.agh.soa.lab6.exception.LibraryException.*;
-import static java.util.Optional.of;
-import static java.util.stream.Collectors.toList;
+import lombok.Getter;
 
 @Getter
 @Stateful
@@ -35,6 +37,8 @@ public class LibraryService implements ILibraryService {
     private ReaderRepository readerRepository;
     @EJB
     private BorrowRepository borrowRepository;
+    @EJB
+    private LibraryMessageProducer messageProducer;
 
     @Override
     public void borrowBook(@NotNull Reader reader, @NotNull Long bookId,
@@ -56,6 +60,8 @@ public class LibraryService implements ILibraryService {
         borrow.setReturnDateTime(returnDueDate);
 
         borrowRepository.merge(borrow);
+
+        messageProducer.sendMessage(reader.getId(), "Book borrowed: " + targetBook.getTitle());
     }
 
     @Override
@@ -78,6 +84,12 @@ public class LibraryService implements ILibraryService {
         updatedBook.setAvailableCopiesCount(available + 1);
 
         bookRepository.merge(updatedBook);
+
+        messageProducer.sendMessage(reader.getId(), "Book returned: " + updatedBook.getTitle());
+
+        if(available == 0) {
+          messageProducer.sendMessage(updatedBook.getTitle() + " is now available!");
+        }
     }
 
     @Override

@@ -1,17 +1,23 @@
 package com.agh.soa.lab5;
 
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
+import java.util.List;
+import java.util.function.BiConsumer;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.Root;
-import javax.transaction.*;
-import java.util.List;
-import java.util.function.BiConsumer;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
+import javax.transaction.UserTransaction;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.extern.java.Log;
 
+@Log
 @Setter
 @NoArgsConstructor
 public abstract class AbstractRepository<T> {
@@ -43,7 +49,7 @@ public abstract class AbstractRepository<T> {
             userTransaction.commit();
         } catch (NotSupportedException | SystemException
                 | HeuristicMixedException | HeuristicRollbackException | RollbackException e) {
-            e.printStackTrace();
+            log.warning(e.getMessage());
         }
         return entity;
     }

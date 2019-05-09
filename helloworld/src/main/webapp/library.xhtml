@@ -1,12 +1,20 @@
 <!DOCTYPE HTML>
 <HTML lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 <h:head>
     <meta charset="UTF-8"/>
     <title>Library</title>
+    <h:outputScript>
+        function socketListener(message) {
+            window.alert(message);
+        }
+    </h:outputScript>
 </h:head>
 <h:body>
+    <f:websocket channel="notifier" onmessage="socketListener" scope="session"/>
+
     <h2>Welcome to Library</h2>
     <h:form>
         <h3>Current Reader</h3>
@@ -23,6 +31,8 @@
         <h:commandButton value="Update" action="#{library.mergeReader}"/>
         <h:commandButton value="Insert" action="#{library.insertReader}"/>
         <br/>
+        <h:outputText value="Get book available notifications: " />
+        <p:inputSwitch value="#{library.bookAvailableNotify}" />
         <br/>
 
         <h4>Borrowed Books</h4>

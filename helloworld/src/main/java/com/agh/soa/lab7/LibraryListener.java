@@ -10,17 +10,19 @@ import javax.jms.MessageListener;
  * https://blog.coffeebeans.at/archives/988
  */
 @MessageDriven(
-  name = "TestMessageListener",
+  name = "LibraryListener",
   activationConfig = {
     @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
     @ActivationConfigProperty(propertyName = "destination", propertyValue = "AghSoaQueue"),
     @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge")
   }
 )
-public class TestMessageListener implements MessageListener {
+public class LibraryListener implements MessageListener {
 
   @Override
   public void onMessage(Message message) {
-    System.out.println(message);
+    LibraryContext.getCONSUMERS().stream()
+      .filter(c -> c.shouldConsume(message))
+      .forEach(c -> c.consume(message));
   }
 }
