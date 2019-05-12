@@ -8,6 +8,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_OCTET_STREAM;
 import com.agh.soa.lab8.model.MovieUser;
 import com.agh.soa.lab8.service.UserService;
 import io.swagger.annotations.Api;
+import java.net.URI;
 import java.util.List;
 import java.util.function.Consumer;
 import javax.enterprise.context.RequestScoped;
@@ -80,5 +81,11 @@ public class UserController {
   @Produces(APPLICATION_OCTET_STREAM)
   public Response downloadAvatar(@NotNull @PathParam("id") Long id) {
     return userService.getAvatarFile(id);
+  }
+
+  @GET
+  @Path("wrong")
+  public Response redirect() {
+    return Response.seeOther(URI.create(uriInfo.getBaseUri() + USER_CONTEXT)).build();
   }
 }
