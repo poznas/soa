@@ -8,6 +8,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import com.agh.soa.lab8.model.Movie;
 import com.agh.soa.lab8.service.MovieService;
 import io.swagger.annotations.Api;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import javax.enterprise.context.RequestScoped;
@@ -71,6 +72,13 @@ public class MovieController {
   @Path("/{id}")
   public Response delete(@NotNull @PathParam("id") Long id) {
     return movieService.delete(id);
+  }
+
+  @GET
+  @Path("links")
+  @Produces("text/uri-list")
+  public List<String> getAsUriList() {
+    return movieService.getAsUriList(decorator);
   }
 
 }
