@@ -1,5 +1,7 @@
 package com.agh.soa.lab5;
 
+import static java.util.Optional.of;
+
 import java.util.List;
 import java.util.function.BiConsumer;
 import javax.annotation.Resource;
@@ -13,6 +15,7 @@ import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
+import javax.validation.constraints.NotNull;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.java.Log;
@@ -40,6 +43,16 @@ public abstract class AbstractRepository<T> {
 
     public void delete(T entity) {
         commit(entity, (em, x) -> em.remove(em.contains(x) ? x : em.merge(x)));
+    }
+
+    public boolean delete(@NotNull Long id) {
+        var entity = of(id).map(this::getEntity);
+
+        if( entity.isPresent()) {
+            delete(entity.get());
+            return true;
+        }
+        return false;
     }
 
     private T commit(T entity, BiConsumer<EntityManager, T> action) {
