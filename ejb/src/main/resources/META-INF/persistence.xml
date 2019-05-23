@@ -11,6 +11,8 @@
         <class>com.agh.soa.lab6.model.Reader</class>
         <class>com.agh.soa.lab8.model.MovieUser</class>
         <class>com.agh.soa.lab8.model.Movie</class>
+        <class>com.agh.soa.parking.model.ParkingUser</class>
+        <class>com.agh.soa.parking.model.ParkingZone</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>

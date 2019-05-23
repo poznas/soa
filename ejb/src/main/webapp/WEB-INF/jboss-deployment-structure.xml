@@ -2,6 +2,7 @@
   <deployment>
     <dependencies>
       <module name="javax.jms.api" export="true"/>
+      <module name="org.postgresql" />
     </dependencies>
   </deployment>
 </jboss-deployment-structure>

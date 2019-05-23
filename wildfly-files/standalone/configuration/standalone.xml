@@ -162,10 +162,10 @@
             <password>sa</password>
           </security>
         </datasource>
-        <datasource jndi-name="java:/RemotePostgresDS" pool-name="PostgresDS">
+        <datasource jndi-name="java:/RemotePostgresDS" pool-name="RemotePostgresDS">
           <connection-url>jdbc:postgresql://db.bsm.pub:5432/soa</connection-url>
           <driver-class>org.postgresql.Driver</driver-class>
-          <driver>org.postgresql</driver>
+          <driver>postgresql</driver>
           <security>
             <user-name>soa_user</user-name>
             <password>soa_user</password>
@@ -528,6 +528,29 @@
     <subsystem xmlns="urn:jboss:domain:sar:1.0"/>
     <subsystem xmlns="urn:jboss:domain:security:2.0">
       <security-domains>
+        <security-domain name="parkingApp">
+          <authentication>
+            <login-module code="Remoting" flag="optional">
+              <module-option name="password-stacking" value="useFirstPass"/>
+            </login-module>
+            <login-module code="Database" flag="required">
+              <module-option name="dsJndiName" value="java:/RemotePostgresDS"/>
+              <module-option name="rolesQuery" value="SELECT role, 'Roles' FROM PARKING_USER WHERE username=?"/>
+              <module-option name="hashAlgorithm" value="SHA-256"/>
+              <module-option name="hashEncoding" value="hex"/>
+              <module-option name="principalsQuery" value="SELECT password from PARKING_USER WHERE username=?"/>
+            </login-module>
+          </authentication>
+          <authorization>
+            <policy-module code="Database" flag="required">
+              <module-option name="dsJndiName" value="java:/RemotePostgresDS"/>
+              <module-option name="rolesQuery" value="SELECT role, 'Roles' FROM PARKING_USER WHERE username=?"/>
+              <module-option name="hashAlgorithm" value="SHA-256"/>
+              <module-option name="hashEncoding" value="hex"/>
+              <module-option name="principalsQuery" value="SELECT password from PARKING_USER WHERE username=?"/>
+            </policy-module>
+          </authorization>
+        </security-domain>
         <security-domain name="other" cache-type="default">
           <authentication>
             <login-module code="Remoting" flag="optional">

@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jboss-web version="10.0"
-           xmlns="http://www.jboss.com/xml/ns/javaee"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:schemaLocation="http://www.jboss.com/xml/ns/javaee http://www.jboss.org/j2ee/schema/jboss-web_10_0.xsd">
+  xmlns="http://www.jboss.com/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.jboss.com/xml/ns/javaee http://www.jboss.org/j2ee/schema/jboss-web_10_0.xsd">
 
-    <context-root>/</context-root>
+  <context-root>/</context-root>
+
+  <!-- http://www.examsmyantra.com/article/119/javaee/form-based-login-authentication-in-javaee7-with-wildfly-and-mysql -->
+
+  <security-domain>parkingApp</security-domain>
 
 </jboss-web>

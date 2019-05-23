@@ -26,7 +26,7 @@ import lombok.extern.java.Log;
 public abstract class AbstractRepository<T> {
 
     @PersistenceContext(unitName = "Soa")
-    private EntityManager entityManager;
+    protected EntityManager entityManager;
 
     @Resource
     private UserTransaction userTransaction;
@@ -68,11 +68,15 @@ public abstract class AbstractRepository<T> {
     }
 
     public T getEntity(Long id) {
+        return getEntity("id", id);
+    }
+
+    protected T getEntity(String field, Object value) {
         var builder = entityManager.getCriteriaBuilder();
         var query = builder.createQuery(getType());
         Root<T> root = query.from(getType());
 
-        query.select(root).where(builder.equal(root.get("id"), id));
+        query.select(root).where(builder.equal(root.get(field), value));
 
         try {
             return entityManager.createQuery(query).getSingleResult();
