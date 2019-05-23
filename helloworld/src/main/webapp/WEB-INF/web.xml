@@ -29,4 +29,44 @@
         <param-name>javax.faces.ENABLE_WEBSOCKET_ENDPOINT</param-name>
         <param-value>true</param-value>
     </context-param>
+
+    <welcome-file-list>
+        <welcome-file>/parking/protected/parkingPassword.xhtml</welcome-file>
+    </welcome-file-list>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>user</web-resource-name>
+            <url-pattern>/parking/protected/*</url-pattern>
+            <http-method>POST</http-method>
+            <http-method>GET</http-method>
+            <http-method>PUT</http-method>
+            <http-method>DELETE</http-method>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>ADMINISTRATOR</role-name>
+            <role-name>WORKER</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <login-config>
+    <!-- Thy not BASIC: https://stackoverflow.com/questions/233507/how-to-log-out-user-from-web-site-using-basic-authentication -->
+        <auth-method>FORM</auth-method>
+        <form-login-config>
+            <form-login-page>/parking/public/login.xhtml</form-login-page>
+            <form-error-page>/parking/public/loginError.xhtml</form-error-page>
+        </form-login-config>
+    </login-config>
+
+    <security-role>
+        <role-name>ADMINISTRATOR</role-name>
+    </security-role>
+    <security-role>
+        <role-name>WORKER</role-name>
+    </security-role>
+
+    <listener>
+        <listener-class>com.agh.soa.parking.ParkingSessionListener</listener-class>
+    </listener>
+
 </web-app>
