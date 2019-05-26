@@ -1,6 +1,6 @@
 package com.agh.soa.parking.exception;
 
-public class InvalidPasswordException extends RuntimeException implements Runnable {
+public class InvalidPasswordException extends Exception {
 
   public static final InvalidPasswordException INVALID_PASSWORD
     = new InvalidPasswordException("Provided current password does not match stored hash");
@@ -9,8 +9,4 @@ public class InvalidPasswordException extends RuntimeException implements Runnab
     super(message);
   }
 
-  @Override
-  public void run() {
-    throw this;
-  }
 }

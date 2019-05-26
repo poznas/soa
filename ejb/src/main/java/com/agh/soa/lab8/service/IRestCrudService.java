@@ -19,6 +19,10 @@ public interface IRestCrudService<T> extends Serializable {
 
   AbstractRepository<T> getRepository();
 
+  default Response findAll() {
+    return findAll(null);
+  }
+
   default Response findAll(Consumer<T> decorator) {
     return findAll(null, decorator);
   }
