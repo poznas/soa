@@ -32,6 +32,7 @@ class SessionContextService {
     return context.getCallerPrincipal().getName();
   }
 
+  // https://access.redhat.com/solutions/138613 >:^c
   boolean isCallerInRole(String role) {
     return ofNullable(principalName()).map(userRepository::selectByName)
       .filter(user -> role.equals(user.getRole())).isPresent();

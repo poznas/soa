@@ -3,11 +3,13 @@ package com.agh.soa.lab5;
 import static java.util.Optional.of;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
@@ -68,15 +70,18 @@ public abstract class AbstractRepository<T> {
     }
 
     public T getEntity(Long id) {
-        return getEntity("id", id);
+        return getEntity(Map.of("id", id));
     }
 
-    protected T getEntity(String field, Object value) {
+    protected T getEntity(@NotNull Map<String, Object> conditions) {
         var builder = entityManager.getCriteriaBuilder();
         var query = builder.createQuery(getType());
         Root<T> root = query.from(getType());
 
-        query.select(root).where(builder.equal(root.get(field), value));
+        var predicates = conditions.entrySet().stream()
+          .map(e -> builder.equal(root.get(e.getKey()), e.getValue())).toArray(Predicate[]::new);
+
+        query.select(root).where(predicates);
 
         try {
             return entityManager.createQuery(query).getSingleResult();

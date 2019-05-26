@@ -4,6 +4,7 @@ import static javax.ejb.TransactionManagementType.BEAN;
 
 import com.agh.soa.lab5.AbstractRepository;
 import com.agh.soa.parking.model.ParkingUser;
+import java.util.Map;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionManagement;
 import javax.validation.constraints.NotNull;
@@ -18,6 +19,6 @@ public class ParkingUserRepository extends AbstractRepository<ParkingUser> {
   }
 
   public ParkingUser selectByName(@NotNull String username) {
-    return getEntity("username", username);
+    return getEntity(Map.of("username", username));
   }
 }

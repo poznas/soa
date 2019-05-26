@@ -1,15 +1,14 @@
 package com.agh.soa.parking.model;
 
-import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.GenerationType.IDENTITY;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,14 +19,18 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ParkingZone implements Serializable {
+public class ParkingSpace implements Serializable {
 
   @Id
   @GeneratedValue(strategy = IDENTITY)
   private Long id;
-  @Column(unique = true)
-  private String name;
+  private boolean occupied;
 
-  @OneToMany(fetch = EAGER, mappedBy = "zone")
-  private List<ParkingSpace> spaces;
+  @ManyToOne
+  @JsonIgnore
+  private ParkingZone zone;
+
+  @Column(name="zone_id", updatable=false, insertable=false)
+  private Long zoneId;
+
 }

@@ -20,13 +20,11 @@ public class ParkingChangePasswordView extends BaseParkingView {
   @Setter
   private Long pickedUserId;
 
-  private String errorMessage;
-
   public void changeYourPassword() {
     try {
       userService.changeUserPassword(oldPassword, newPassword);
     } catch (InvalidPasswordException ex) {
-      errorMessage = ex.getMessage();
+      showError(ex.getMessage());
     }
   }
 

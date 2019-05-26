@@ -7,6 +7,7 @@ import static java.util.Collections.emptyList;
 import static java.util.Optional.of;
 import static org.apache.commons.codec.digest.DigestUtils.sha256Hex;
 
+import com.agh.soa.parking.exception.InvalidPasswordException;
 import com.agh.soa.parking.model.ParkingUser;
 import com.agh.soa.parking.service.IParkingUserService;
 import java.util.List;
@@ -33,10 +34,16 @@ public class ParkingUserService extends SessionContextService implements IParkin
 
   @Override
   @PermitAll
-  public void changeUserPassword(@NotNull String oldPassword, @NotNull String newPassword) {
-    of(principalName()).map(userRepository::selectByName)
-      .filter(user -> user.getPassword().equals(sha256Hex(oldPassword)))
-      .ifPresentOrElse(user -> changeUserPassword(user, newPassword), INVALID_PASSWORD);
+  public void changeUserPassword(@NotNull String oldPassword, @NotNull String newPassword)
+    throws InvalidPasswordException {
+    var user = of(principalName()).map(userRepository::selectByName)
+      .filter(u -> u.getPassword().equals(sha256Hex(oldPassword)));
+
+    if (user.isPresent()) {
+      changeUserPassword(user.get(), newPassword);
+    } else {
+      throw INVALID_PASSWORD;
+    }
   }
 
   @Override
