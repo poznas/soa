@@ -23,8 +23,8 @@
             <property name="javax.persistence.jdbc.password" value="soa_user"/> <!-- DB Password -->
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgresPlusDialect"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
-            <property name="hibernate.show_sql" value="true"/> <!-- Show SQL in console -->
-            <property name="hibernate.format_sql" value="true"/> <!-- Show SQL formatted -->
+<!--            <property name="hibernate.show_sql" value="true"/> -->
+<!--            <property name="hibernate.format_sql" value="true"/> -->
             <property name="hibernate.physical_naming_strategy"
                       value="com.vladmihalcea.hibernate.type.util.CamelCaseToSnakeCaseNamingStrategy"/>
         </properties>

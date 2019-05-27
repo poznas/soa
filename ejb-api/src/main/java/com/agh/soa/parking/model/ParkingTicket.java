@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +16,7 @@ import lombok.Setter;
 @Entity
 @Setter
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class ParkingTicket {
@@ -24,6 +26,7 @@ public class ParkingTicket {
   private Long id;
   private LocalDateTime purchaseTime;
   private TicketType type;
+  private LocalDateTime expireTime;
 
   @ManyToOne
   private ParkingSpace space;
