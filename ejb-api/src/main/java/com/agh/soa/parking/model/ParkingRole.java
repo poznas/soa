@@ -7,4 +7,6 @@ public class ParkingRole {
 
   public static final String ADMINISTRATOR = "ADMINISTRATOR";
   public static final String WORKER = "WORKER";
+  public static final String EXTERNAL = "EXTERNAL";
+
 }
