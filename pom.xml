@@ -21,6 +21,7 @@
         <module>ejb-api</module>
         <module>ejb</module>
         <module>helloworld</module>
+        <module>another-war-more</module>
     </modules>
 
     <parent>
