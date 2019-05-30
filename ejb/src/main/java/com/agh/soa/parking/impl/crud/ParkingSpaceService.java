@@ -1,6 +1,5 @@
 package com.agh.soa.parking.impl.crud;
 
-import static java.lang.String.format;
 import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
@@ -8,6 +7,7 @@ import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import com.agh.soa.lab8.service.IRestCrudService;
 import com.agh.soa.parking.dao.ParkingSpaceRepository;
 import com.agh.soa.parking.dao.ParkingTicketRepository;
+import com.agh.soa.parking.jms.ParkingWorkerNotifier;
 import com.agh.soa.parking.model.ParkingSpace;
 import com.agh.soa.parking.timer.SpaceOccupationTimer;
 import java.util.Map;
@@ -31,6 +31,8 @@ public class ParkingSpaceService implements IRestCrudService<ParkingSpace> {
   ParkingSpaceRepository repository;
   @EJB
   ParkingTicketRepository ticketRepository;
+  @EJB
+  ParkingWorkerNotifier workerNotifier;
 
   private transient Timer timer = new Timer();
 
@@ -71,7 +73,8 @@ public class ParkingSpaceService implements IRestCrudService<ParkingSpace> {
         new SpaceOccupationTimer(timer,
           () -> repository.getSpace(zoneId, spaceId),
           () -> ticketRepository.getActiveTicket(zoneId, spaceId),
-          () -> log.info(format("Notifying zone [%d] workers", zoneId)), space)
+          () -> workerNotifier.unauthorizedSpaceOccupation(space),
+          space)
       )
       .ifPresent(task -> {
         zoneOccupationTimers.put(spaceId, task);

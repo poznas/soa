@@ -1,9 +1,9 @@
 package com.agh.soa.lab8.service;
 
+import static com.agh.soa.utils.CollectionUtils.mapList;
 import static java.lang.System.getProperty;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.of;
-import static java.util.stream.Collectors.toList;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 
 import com.agh.soa.lab8.dao.MovieRepository;
@@ -36,8 +36,8 @@ public class UserService implements IRestCrudService<MovieUser> {
     var user = repository.getEntity(id);
 
     if (nonNull(user)) {
-      List<Movie> movies = movieIds.stream()
-        .map(movieRepository::getEntity).collect(toList());
+
+      List<Movie> movies = mapList(movieIds, movieRepository::getEntity);
 
       user.setMovies(movies);
       repository.merge(user);

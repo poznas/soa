@@ -1,9 +1,9 @@
 package com.agh.soa.lab8.service;
 
 
+import static com.agh.soa.utils.CollectionUtils.filterList;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
-import static java.util.stream.Collectors.toList;
 import static javax.ws.rs.core.Response.Status.CREATED;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 
@@ -31,7 +31,7 @@ public interface IRestCrudService<T> extends Serializable {
     List<T> entities = getRepository().getEntities();
 
     if (nonNull(predicate)) {
-      entities = entities.stream().filter(predicate).collect(toList());
+      entities = filterList(entities, predicate);
     }
     if (nonNull(decorator)) {
       entities.forEach(decorator);
