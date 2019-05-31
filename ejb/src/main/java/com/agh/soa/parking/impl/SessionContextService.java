@@ -5,13 +5,16 @@ import static java.util.Optional.ofNullable;
 
 import com.agh.soa.parking.dao.ParkingUserRepository;
 import com.agh.soa.parking.exception.ActiveSessionException;
+import com.agh.soa.parking.model.entity.ParkingUser;
+import com.agh.soa.parking.service.ISessionContextService;
+import java.util.Optional;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.EJBAccessException;
 import javax.ejb.SessionContext;
 import javax.validation.constraints.NotNull;
 
-class SessionContextService {
+class SessionContextService implements ISessionContextService {
 
   @Resource
   SessionContext context;
@@ -34,8 +37,11 @@ class SessionContextService {
 
   // https://access.redhat.com/solutions/138613 >:^c
   boolean isCallerInRole(String role) {
-    return ofNullable(principalName()).map(userRepository::selectByName)
-      .filter(user -> role.equals(user.getRole())).isPresent();
+    return getCurrentUser().filter(user -> role.equals(user.getRole())).isPresent();
+  }
+
+  Optional<ParkingUser> getCurrentUser() {
+    return ofNullable(principalName()).map(userRepository::selectByName);
   }
 
   void assertAdminRole() {

@@ -31,7 +31,7 @@
     </context-param>
 
     <welcome-file-list>
-        <welcome-file>/parking/protected/parkingPassword.xhtml</welcome-file>
+        <welcome-file>/parking/protected/parkingDashboard.xhtml</welcome-file>
     </welcome-file-list>
 
     <security-constraint>

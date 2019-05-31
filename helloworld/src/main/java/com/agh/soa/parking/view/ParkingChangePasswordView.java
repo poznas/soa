@@ -1,6 +1,8 @@
-package com.agh.soa.parking;
+package com.agh.soa.parking.view;
 
 import com.agh.soa.parking.exception.InvalidPasswordException;
+import com.agh.soa.parking.service.IParkingUserService;
+import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import lombok.Getter;
@@ -13,6 +15,9 @@ import lombok.extern.java.Log;
 @Named("passView")
 public class ParkingChangePasswordView extends BaseParkingView {
 
+  @EJB(lookup = "java:global/ejb/ParkingUserService")
+  IParkingUserService service;
+
   @Setter
   private String oldPassword;
   @Setter
@@ -22,13 +27,13 @@ public class ParkingChangePasswordView extends BaseParkingView {
 
   public void changeYourPassword() {
     try {
-      userService.changeUserPassword(oldPassword, newPassword);
+      service.changeUserPassword(oldPassword, newPassword);
     } catch (InvalidPasswordException ex) {
       showError(ex.getMessage());
     }
   }
 
   public void changeUserPassword() {
-    userService.changeUserPassword(pickedUserId, newPassword);
+    service.changeUserPassword(pickedUserId, newPassword);
   }
 }

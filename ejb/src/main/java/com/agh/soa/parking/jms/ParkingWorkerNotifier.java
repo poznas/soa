@@ -7,7 +7,7 @@ import static java.lang.String.format;
 
 import com.agh.soa.lab7.AbstractMessageProducer;
 import com.agh.soa.parking.dao.ParkingUserRepository;
-import com.agh.soa.parking.model.ParkingSpace;
+import com.agh.soa.parking.model.entity.ParkingSpace;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;

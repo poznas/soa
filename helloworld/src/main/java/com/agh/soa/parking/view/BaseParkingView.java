@@ -1,14 +1,13 @@
-package com.agh.soa.parking;
+package com.agh.soa.parking.view;
 
 import static javax.faces.application.FacesMessage.SEVERITY_ERROR;
 
 import com.agh.soa.parking.exception.ActiveSessionException;
-import com.agh.soa.parking.service.IParkingUserService;
+import com.agh.soa.parking.service.ISessionContextService;
 import java.io.IOException;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -18,15 +17,14 @@ import lombok.extern.java.Log;
 
 @Log
 @Getter
-public class BaseParkingView implements Serializable {
+public abstract class BaseParkingView implements Serializable {
 
-  @EJB(lookup = "java:global/ejb/ParkingUserService")
-  IParkingUserService userService;
+  abstract ISessionContextService getService();
 
   @PostConstruct
   public void sessionCreated() {
     try {
-      userService.registerSession(getRequest().getSession().getId());
+      getService().registerSession(getRequest().getSession().getId());
     } catch (ActiveSessionException e) {
       try {
         getExternalContext().redirect("/parking/public/loginError.xhtml?msg=" + e.getMessage());
@@ -38,11 +36,11 @@ public class BaseParkingView implements Serializable {
 
   @PreDestroy
   public void viewDestroyed() {
-    userService.unregisterSession();
+    getService().unregisterSession();
   }
 
   public String logout() {
-    userService.unregisterSession();
+    getService().unregisterSession();
     getRequest().getSession().invalidate();
     return "logout";
   }

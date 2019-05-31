@@ -3,7 +3,7 @@ package com.agh.soa.parking.dao;
 import static javax.ejb.TransactionManagementType.BEAN;
 
 import com.agh.soa.lab5.AbstractRepository;
-import com.agh.soa.parking.model.ParkingSpace;
+import com.agh.soa.parking.model.entity.ParkingSpace;
 import java.util.Map;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionManagement;
