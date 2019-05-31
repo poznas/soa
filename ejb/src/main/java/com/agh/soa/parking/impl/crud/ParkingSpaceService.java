@@ -8,7 +8,7 @@ import com.agh.soa.lab8.service.IRestCrudService;
 import com.agh.soa.parking.dao.ParkingSpaceRepository;
 import com.agh.soa.parking.dao.ParkingTicketRepository;
 import com.agh.soa.parking.jms.ParkingWorkerNotifier;
-import com.agh.soa.parking.model.ParkingSpace;
+import com.agh.soa.parking.model.entity.ParkingSpace;
 import com.agh.soa.parking.timer.SpaceOccupationTimer;
 import java.util.Map;
 import java.util.Timer;

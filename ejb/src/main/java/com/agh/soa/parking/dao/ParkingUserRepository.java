@@ -5,8 +5,8 @@ import static java.util.Optional.ofNullable;
 import static javax.ejb.TransactionManagementType.BEAN;
 
 import com.agh.soa.lab5.AbstractRepository;
-import com.agh.soa.parking.model.ParkingUser;
-import com.agh.soa.parking.model.ParkingZone;
+import com.agh.soa.parking.model.entity.ParkingUser;
+import com.agh.soa.parking.model.entity.ParkingZone;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;

@@ -5,8 +5,8 @@ import static java.time.LocalDateTime.now;
 import static java.time.temporal.ChronoUnit.MILLIS;
 import static java.util.Optional.ofNullable;
 
-import com.agh.soa.parking.model.ParkingSpace;
-import com.agh.soa.parking.model.ParkingTicket;
+import com.agh.soa.parking.model.entity.ParkingSpace;
+import com.agh.soa.parking.model.entity.ParkingTicket;
 import java.time.LocalDateTime;
 import java.util.Timer;
 import java.util.TimerTask;

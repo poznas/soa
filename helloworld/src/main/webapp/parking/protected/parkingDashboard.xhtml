@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<HTML lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+</h:head>
+<h:body>
+
+    <h:form>
+        <h:outputLabel value="Logged in as #{request.remoteUser}"/>
+        <p:spacer width="5"/>
+        <h:commandButton value="Logout" action="#{dashboard.logout}"/>
+    </h:form>
+
+    <p:spacer width="20"/>
+
+    <h:form>
+        <h:commandLink action="parkingPassword" value="manage password"/>
+    </h:form>
+
+    <p:separator/>
+    <p:spacer height="20"/>
+
+    <p:dataGrid var="zone" value="#{dashboard.service.dashboardZones}" columns="1" layout="grid"
+                id="zones">
+
+        <f:facet name="header">
+            Parking Zones
+        </f:facet>
+
+        <p:dataGrid var="space" value="#{zone.spaces}" columns="5" layout="grid" id="spaces">
+
+            <f:facet name="header">
+                Zone #{zone.id} - #{zone.name}
+            </f:facet>
+
+            <p:panel header="#{space.id}" style="text-align:center">
+                <h:panelGrid columns="1" style="width:100%">
+                    <p:graphicImage name="space-occupied-#{space.occupied}.png"/>
+
+                    <h:outputText value="Unauthorized occupation!" style="color: red"
+                                  rendered="#{space.occupied and !space.occupationAuthorized}"/>
+
+                    <p:dataList value="#{space.recentTickets}" var="ticket">
+                        <f:facet name="header">
+                            Recent Tickets
+                        </f:facet>
+
+                        <h:panelGrid columns="2" border="1">
+                            <h:outputText value="ID:"/>
+                            <h:outputText value="#{ticket.id}"/>
+                            <h:outputText value="Expire:"/>
+                            <h:outputText value="#{ticket.expireTime}">
+                                <f:convertDateTime pattern="dd.MM.yy HH:mm:ss"
+                                                   type="localDateTime"/>
+                            </h:outputText>
+                            <h:outputText value="Purchased:"/>
+                            <h:outputText value="#{ticket.purchaseTime}">
+                                <f:convertDateTime pattern="dd.MM.yy HH:mm:ss"
+                                                   type="localDateTime"/>
+                            </h:outputText>
+                        </h:panelGrid>
+                    </p:dataList>
+
+                </h:panelGrid>
+            </p:panel>
+
+        </p:dataGrid>
+
+    </p:dataGrid>
+
+</h:body>
+</HTML>
+

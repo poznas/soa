@@ -8,7 +8,7 @@ import static java.util.Optional.of;
 import static org.apache.commons.codec.digest.DigestUtils.sha256Hex;
 
 import com.agh.soa.parking.exception.InvalidPasswordException;
-import com.agh.soa.parking.model.ParkingUser;
+import com.agh.soa.parking.model.entity.ParkingUser;
 import com.agh.soa.parking.service.IParkingUserService;
 import java.util.List;
 import javax.annotation.security.DeclareRoles;
