@@ -10,22 +10,18 @@ import com.agh.soa.parking.dao.ParkingUserRepository;
 import com.agh.soa.parking.model.entity.ParkingSpace;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
-import javax.ejb.Stateful;
-import javax.jms.ConnectionFactory;
+import javax.ejb.Stateless;
 import javax.jms.Queue;
 import lombok.Getter;
 import lombok.extern.java.Log;
 
 @Log
 @Getter
-@Stateful
+@Stateless
 public class ParkingWorkerNotifier extends AbstractMessageProducer {
 
-  @Resource(name = "java:/ConnectionFactory")
-  ConnectionFactory connectionFactory;
-
   @Resource(name = "java:/queue/ParkingWorkerNotificationQueue")
-  Queue queue;
+  Queue destination;
 
   @EJB
   ParkingUserRepository userRepository;

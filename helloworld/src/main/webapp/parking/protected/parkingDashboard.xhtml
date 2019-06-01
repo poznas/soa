@@ -4,7 +4,18 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 <h:head>
+    <meta charset="UTF-8"/>
+    <title>Parking Dasboard</title>
+    <h:outputScript>
+        function socketListener(message) {
+            window.alert(message);
+        }
 
+        function refreshZonesFun(message) {
+            console.log(message);
+            window.location.reload();
+        }
+    </h:outputScript>
 </h:head>
 <h:body>
 
@@ -70,6 +81,10 @@
         </p:dataGrid>
 
     </p:dataGrid>
+
+
+    <f:websocket channel="refreshZones" onmessage="refreshZonesFun" scope="session"/>
+    <f:websocket channel="notifier" onmessage="socketListener" scope="session"/>
 
 </h:body>
 </HTML>

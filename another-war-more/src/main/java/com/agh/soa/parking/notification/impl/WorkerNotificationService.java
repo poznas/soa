@@ -4,6 +4,7 @@ import static java.util.Optional.of;
 import static javax.ejb.LockType.READ;
 import static javax.ejb.LockType.WRITE;
 
+import com.agh.soa.parking.notification.jms.WorkerNotificationTopicPublisher;
 import com.agh.soa.parking.notification.model.WorkerNotification;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,10 +12,16 @@ import java.util.Map;
 import java.util.Set;
 import javax.ejb.Lock;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.jms.JMSException;
+import javax.jms.Message;
 import javax.validation.constraints.NotNull;
 
 @ApplicationScoped
 public class WorkerNotificationService {
+
+  @Inject
+  WorkerNotificationTopicPublisher topicPublisher;
 
   private Map<String, Set<WorkerNotification>> notifications = new HashMap<>();
 
@@ -34,10 +41,10 @@ public class WorkerNotificationService {
     notifications.put(notification.getUsername(), userNotifications);
   }
 
-  public void handleNotification(@NotNull WorkerNotification notification) {
-    putUserNotification(notification);
+  public void handleNotification(Message message) throws JMSException {
+    putUserNotification(WorkerNotification.of(message));
 
-    //TODO: forward to ParkingWorkerNotificationTopic
+    topicPublisher.sendMessage(message);
   }
 
 }

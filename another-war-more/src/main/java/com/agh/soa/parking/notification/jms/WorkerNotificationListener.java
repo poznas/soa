@@ -1,7 +1,6 @@
 package com.agh.soa.parking.notification.jms;
 
 import com.agh.soa.parking.notification.impl.WorkerNotificationService;
-import com.agh.soa.parking.notification.model.WorkerNotification;
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
 import javax.inject.Inject;
@@ -29,7 +28,7 @@ public class WorkerNotificationListener implements MessageListener {
     try {
       log.info("Message received: " + message.getJMSMessageID());
 
-      notificationService.handleNotification(WorkerNotification.of(message));
+      notificationService.handleNotification(message);
 
     } catch (JMSException e) {
       log.warning(e.getMessage());
