@@ -7,6 +7,7 @@ import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import com.agh.soa.lab8.service.IRestCrudService;
 import com.agh.soa.parking.dao.ParkingSpaceRepository;
 import com.agh.soa.parking.dao.ParkingTicketRepository;
+import com.agh.soa.parking.jms.ParkingStateChangeNotifier;
 import com.agh.soa.parking.jms.ParkingWorkerNotifier;
 import com.agh.soa.parking.model.entity.ParkingSpace;
 import com.agh.soa.parking.timer.SpaceOccupationTimer;
@@ -33,6 +34,8 @@ public class ParkingSpaceService implements IRestCrudService<ParkingSpace> {
   ParkingTicketRepository ticketRepository;
   @EJB
   ParkingWorkerNotifier workerNotifier;
+  @EJB
+  ParkingStateChangeNotifier stateChangeNotifier;
 
   private transient Timer timer = new Timer();
 
@@ -53,6 +56,7 @@ public class ParkingSpaceService implements IRestCrudService<ParkingSpace> {
         space.setOccupied(patch.get());
 
         spawnOccupationTimer(zoneId, spaceId, space);
+        stateChangeNotifier.parkingSpaceStateChanged(space);
 
         return merge(space);
       })
@@ -73,7 +77,10 @@ public class ParkingSpaceService implements IRestCrudService<ParkingSpace> {
         new SpaceOccupationTimer(timer,
           () -> repository.getSpace(zoneId, spaceId),
           () -> ticketRepository.getActiveTicket(zoneId, spaceId),
-          () -> workerNotifier.unauthorizedSpaceOccupation(space),
+          () -> {
+            workerNotifier.unauthorizedSpaceOccupation(space);
+            stateChangeNotifier.parkingSpaceStateChanged(space);
+          },
           space)
       )
       .ifPresent(task -> {

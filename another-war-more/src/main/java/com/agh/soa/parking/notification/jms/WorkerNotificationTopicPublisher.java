@@ -1,38 +1,37 @@
-package com.agh.soa.lab7;
+package com.agh.soa.parking.notification.jms;
 
 import javax.annotation.Resource;
+import javax.ejb.Stateless;
 import javax.jms.ConnectionFactory;
-import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
+import javax.jms.Topic;
 import javax.validation.constraints.NotNull;
 import lombok.extern.java.Log;
 
 @Log
-public abstract class AbstractMessageProducer {
+@Stateless
+public class WorkerNotificationTopicPublisher {
 
   @Resource(name = "java:/ConnectionFactory")
   ConnectionFactory connectionFactory;
 
-  protected abstract Destination getDestination();
+  @Resource(name = "java:/topic/ParkingWorkerNotificationTopic")
+  Topic destination;
 
-  protected void sendMessage(@NotNull MessageBuilder builder) {
+  public void sendMessage(@NotNull Message message) {
     try (
       var connection = connectionFactory.createConnection();
       var session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-      var publisher = session.createProducer(getDestination())
+      var publisher = session.createProducer(destination)
     ) {
       connection.start();
-      publisher.send(builder.buildMessage(session));
+      log.info("publish message for " + message.getStringProperty("workerId"));
+      publisher.send(message);
     } catch (JMSException e) {
       log.warning(e.getMessage());
     }
-  }
-
-  protected interface MessageBuilder {
-
-    Message buildMessage(Session session) throws JMSException;
   }
 
 }

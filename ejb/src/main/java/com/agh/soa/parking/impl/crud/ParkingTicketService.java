@@ -8,6 +8,7 @@ import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 import com.agh.soa.lab8.service.IRestCrudService;
 import com.agh.soa.parking.dao.ParkingSpaceRepository;
 import com.agh.soa.parking.dao.ParkingTicketRepository;
+import com.agh.soa.parking.jms.ParkingStateChangeNotifier;
 import com.agh.soa.parking.jms.ParkingWorkerNotifier;
 import com.agh.soa.parking.model.TicketType;
 import com.agh.soa.parking.model.entity.ParkingSpace;
@@ -32,6 +33,8 @@ public class ParkingTicketService implements IRestCrudService<ParkingTicket> {
   ParkingSpaceRepository spaceRepository;
   @EJB
   ParkingWorkerNotifier workerNotifier;
+  @EJB
+  ParkingStateChangeNotifier stateChangeNotifier;
 
   private transient Timer timer = new Timer();
 
@@ -46,6 +49,7 @@ public class ParkingTicketService implements IRestCrudService<ParkingTicket> {
         ticket = getRepository().insert(ticket);
 
         spawnTicketTimer(zoneId, spaceId, ticket);
+        stateChangeNotifier.parkingSpaceStateChanged(space);
 
         return Response.status(CREATED).build();
       })
@@ -62,7 +66,10 @@ public class ParkingTicketService implements IRestCrudService<ParkingTicket> {
     SpaceTicketTimer.builder().timer(timer)
       .spaceSupplier(() -> spaceRepository.getSpace(zoneId, spaceId))
       .activeTicketSupplier(() -> repository.getActiveTicket(zoneId, spaceId))
-      .workerNotifier(() -> workerNotifier.unauthorizedSpaceOccupation(ticket.getSpace()))
+      .workerNotifier(() -> {
+        workerNotifier.unauthorizedSpaceOccupation(ticket.getSpace());
+        stateChangeNotifier.parkingSpaceStateChanged(ticket.getSpace());
+      })
       .space(ticket.getSpace())
       .ticket(ticket)
       .build().schedule();
