@@ -2,10 +2,12 @@ package com.agh.soa.parking.impl;
 
 import static com.agh.soa.parking.model.ParkingRole.ADMINISTRATOR;
 import static com.agh.soa.parking.model.ParkingRole.WORKER;
+import static com.agh.soa.parking.timer.SpaceOccupationTimer.STARTER_FREE_TIME;
 import static com.agh.soa.utils.CollectionUtils.filterList;
 import static com.agh.soa.utils.CollectionUtils.mapList;
 import static com.agh.soa.utils.ObjectUtils.copyProperties;
 import static java.time.LocalDateTime.now;
+import static java.time.temporal.ChronoUnit.SECONDS;
 import static java.util.Collections.emptySet;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.groupingBy;
@@ -53,7 +55,7 @@ public class ParkingDashboardSupplier extends SessionContextService implements
         .map(Collections::singleton).orElse(emptySet());
 
     var allRecentTickets = ticketRepository.getRecentTickets().stream()
-      .sorted(comparing(ParkingTicket::getExpireTime))
+      .sorted(comparing(ParkingTicket::getExpireTime).reversed())
       .collect(groupingBy(ticket -> ticket.getSpace().getId()));
 
     Function<ParkingSpace, ParkingSpaceDetails> decorateSpace = space -> {
@@ -71,10 +73,19 @@ public class ParkingDashboardSupplier extends SessionContextService implements
   }
 
   private void setOccupationAuthorizedStatus(@NotNull ParkingSpaceDetails space) {
-    var activeTickets = filterList(space.getRecentTickets(),
-      ticket -> ticket.getExpireTime().isAfter(now()));
 
-    space.setOccupationAuthorized(isNotEmpty(activeTickets));
+    if (!space.isOccupied()) {
+      return;
+    }
+
+    if (space.getOccupationStartTime().until(now(), SECONDS) < STARTER_FREE_TIME) {
+      space.setOccupationAuthorized(true);
+    } else {
+      var activeTickets = filterList(space.getRecentTickets(),
+        ticket -> ticket.getExpireTime().isAfter(now()));
+
+      space.setOccupationAuthorized(isNotEmpty(activeTickets));
+    }
   }
 
 }

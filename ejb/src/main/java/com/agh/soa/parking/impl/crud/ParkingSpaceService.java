@@ -1,5 +1,6 @@
 package com.agh.soa.parking.impl.crud;
 
+import static java.time.LocalDateTime.now;
 import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
@@ -54,6 +55,7 @@ public class ParkingSpaceService implements IRestCrudService<ParkingSpace> {
       .filter(space -> patch.isPresent())
       .map(space -> {
         space.setOccupied(patch.get());
+        space.setOccupationStartTime(space.isOccupied() ? now() : null);
 
         spawnOccupationTimer(zoneId, spaceId, space);
         stateChangeNotifier.parkingSpaceStateChanged(space);

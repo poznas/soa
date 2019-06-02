@@ -18,7 +18,7 @@ import lombok.extern.java.Log;
 @RequiredArgsConstructor
 public class SpaceOccupationTimer extends TimerTask {
 
-  private static final long STARTER_FREE_TIME = 5;
+  public static final long STARTER_FREE_TIME = 5;
 
   protected final Timer timer;
   protected final Supplier<ParkingSpace> spaceSupplier;

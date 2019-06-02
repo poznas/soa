@@ -1,6 +1,6 @@
-package com.agh.soa.parking.controller;
+package com.agh.soa.parking.rest;
 
-import static com.agh.soa.parking.controller.ParkingController.CONTEXT;
+import static com.agh.soa.parking.rest.ParkingController.CONTEXT;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import com.agh.soa.parking.impl.crud.ParkingSpaceService;
