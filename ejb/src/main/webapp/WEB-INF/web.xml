@@ -25,6 +25,17 @@
         </auth-constraint>
     </security-constraint>
 
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>external</web-resource-name>
+            <url-pattern>/ParkingMonitorWebService</url-pattern>
+            <http-method>POST</http-method>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>EXTERNAL</role-name>
+        </auth-constraint>
+    </security-constraint>
+
     <login-config>
         <auth-method>BASIC</auth-method>
     </login-config>

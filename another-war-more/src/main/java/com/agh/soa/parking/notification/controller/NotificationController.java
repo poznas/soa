@@ -1,6 +1,7 @@
 package com.agh.soa.parking.notification.controller;
 
 import static com.agh.soa.parking.notification.controller.NotificationController.CONTEXT;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import com.agh.soa.parking.notification.impl.WorkerNotificationService;
 import com.agh.soa.parking.notification.model.WorkerNotification;
@@ -10,6 +11,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.SecurityContext;
 import lombok.extern.java.Log;
@@ -17,6 +19,7 @@ import lombok.extern.java.Log;
 @Log
 @Path(CONTEXT)
 @Api("Parking Notifications")
+@Produces(APPLICATION_JSON)
 @RequestScoped
 public class NotificationController {
 
